@@ -29,6 +29,15 @@ document
     });
 
 
+// Close menu when clicking outside
+
+document.addEventListener("click", (e) => {
+    if (!navMenu.contains(e.target) && !menuBtn.contains(e.target) && navMenu.classList.contains("open")) {
+        navMenu.classList.remove("open");
+    }
+});
+
+
 
 /* ==========================================
    TYPING ANIMATION
@@ -139,8 +148,15 @@ typeEffect();
 const particleContainer =
     document.getElementById("particles");
 
+// Reduce initial particles for better performance
+const INITIAL_PARTICLES = 30;
+const PARTICLE_INTERVAL = 600;
+let particleInterval;
 
 function createParticle() {
+
+    // Check if page is hidden to save resources
+    if (document.hidden) return;
 
     const particle =
         document.createElement("span");
@@ -180,6 +196,7 @@ function createParticle() {
         `${Math.random() * 10 + 8}s`;
 
 
+
     particleContainer.appendChild(
         particle
     );
@@ -193,12 +210,11 @@ function createParticle() {
 
 }
 
-
 /* Initial particles */
 
 for (
     let i = 0;
-    i < 50;
+    i < INITIAL_PARTICLES;
     i++
 ) {
 
@@ -206,13 +222,21 @@ for (
 
 }
 
-
 /* New particles */
 
-setInterval(
+particleInterval = setInterval(
     createParticle,
-    450
+    PARTICLE_INTERVAL
 );
+
+// Pause particles when tab is hidden
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        clearInterval(particleInterval);
+    } else {
+        particleInterval = setInterval(createParticle, PARTICLE_INTERVAL);
+    }
+});
 
 
 
@@ -236,6 +260,9 @@ const observer =
                             .classList
                             .add("show");
 
+                        // Stop observing once revealed
+                        observer.unobserve(entry.target);
+
                     }
 
                 }
@@ -244,7 +271,8 @@ const observer =
         },
 
         {
-            threshold: .12
+            threshold: .12,
+            rootMargin: "0px 0px -50px 0px"
         }
 
     );
@@ -269,6 +297,8 @@ const profile =
         ".profile-card"
     );
 
+// Throttle mouse events for better performance
+let ticking = false;
 
 document.addEventListener(
     "mousemove",
@@ -276,21 +306,25 @@ document.addEventListener(
 
         if (!profile) return;
 
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const x =
+                    (window.innerWidth / 2 -
+                        event.clientX) / 60;
 
-        const x =
-            (window.innerWidth / 2 -
-                event.clientX) / 60;
+                const y =
+                    (window.innerHeight / 2 -
+                        event.clientY) / 60;
 
+                profile.style.transform =
 
-        const y =
-            (window.innerHeight / 2 -
-                event.clientY) / 60;
+                    `rotateY(${x}deg)
+                     rotateX(${y}deg)`;
 
-
-        profile.style.transform =
-
-            `rotateY(${x}deg)
-             rotateX(${y}deg)`;
+                ticking = false;
+            });
+            ticking = true;
+        }
 
     }
 );
