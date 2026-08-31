@@ -10,6 +10,7 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 78px;
 }
 
 body {
@@ -335,7 +336,13 @@ body::before {
 
     font-size: 13px;
 
-    transition: .3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    position: relative;
+
+    padding: 8px 0;
+
+    will-change: transform;
 
 }
 
@@ -343,6 +350,32 @@ body::before {
 .navbar nav a:hover {
 
     color: #38bdf8;
+
+}
+
+.navbar nav a::after {
+
+    content: '';
+
+    position: absolute;
+
+    bottom: -4px;
+
+    left: 0;
+
+    width: 0;
+
+    height: 2px;
+
+    background: linear-gradient(90deg, #38bdf8, #8b5cf6);
+
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+}
+
+.navbar nav a:hover::after {
+
+    width: 100%;
 
 }
 
@@ -636,7 +669,11 @@ body::before {
 
     font-weight: 700;
 
-    transition: .3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    cursor: pointer;
+
+    will-change: transform;
 
 }
 
@@ -669,7 +706,7 @@ body::before {
 .primary:hover {
 
     transform:
-        translateY(-4px);
+        translateY(-4px) scale(1.02);
 
     box-shadow:
         0 15px 45px
@@ -706,7 +743,7 @@ body::before {
 .resume:hover {
 
     transform:
-        translateY(-4px);
+        translateY(-4px) scale(1.02);
 
 }
 
@@ -735,7 +772,7 @@ body::before {
 .secondary:hover {
 
     transform:
-        translateY(-4px);
+        translateY(-4px) scale(1.02);
 
     border-color:
         #38bdf8;
@@ -788,7 +825,9 @@ body::before {
         1px solid
         rgba(255,255,255,.1);
 
-    transition: .3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    will-change: transform;
 
 }
 
@@ -887,11 +926,13 @@ body::before {
         0 0 60px rgba(124,58,237,.15);
 
     transition:
-        transform .3s ease,
-        box-shadow .3s ease;
+        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
     animation:
         gradientMove 10s infinite;
+
+    will-change: transform, box-shadow;
 
 }
 
@@ -1574,7 +1615,9 @@ body::before {
         0 10px 25px rgba(0,0,0,.15),
         0 0 20px rgba(37,99,235,.1);
 
-    transition: .4s;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    will-change: transform, box-shadow;
 
 }
 
@@ -2040,7 +2083,9 @@ body::before {
     box-shadow:
         0 10px 25px rgba(0,0,0,.15);
 
-    transition: .4s;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    will-change: transform, box-shadow;
 
 }
 
@@ -2276,8 +2321,10 @@ footer {
         translateY(35px);
 
     transition:
-        opacity .8s ease,
-        transform .8s ease;
+        opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+
+    will-change: opacity, transform;
 
 }
 
@@ -2288,6 +2335,29 @@ footer {
 
     transform:
         translateY(0);
+
+}
+
+
+/* ==========================================
+   DESKTOP LARGE
+========================================== */
+
+@media(min-width:1400px) {
+
+    .hero {
+
+        max-width: 1400px;
+
+        gap: 100px;
+
+    }
+
+    .section {
+
+        max-width: 1300px;
+
+    }
 
 }
 
@@ -2318,12 +2388,42 @@ footer {
         flex-direction: column;
 
         padding:
-            25px 7%;
+            30px 7%;
+
+        gap: 15px;
 
         background:
             rgba(2,6,23,.98);
 
+        backdrop-filter: blur(20px);
+
+        border-bottom:
+            1px solid
+            rgba(255,255,255,.08);
+
+        animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
     }
+
+@keyframes slideDown {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-10px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
 
 
     .menu-btn {
@@ -2379,6 +2479,68 @@ footer {
     }
 
 
+    .achievement-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE LARGE
+========================================== */
+
+@media(max-width:768px) {
+
+    .hero {
+
+        padding:
+            70px 25px;
+
+    }
+
+    .hero h1 {
+
+        font-size: 42px;
+
+    }
+
+    .profile-card {
+
+        width: 380px;
+
+        height: 450px;
+
+    }
+
+    .profile-photo {
+
+        width: 220px;
+
+        height: 220px;
+
+    }
+
+    .orbit1 {
+
+        width: 320px;
+
+        height: 320px;
+
+    }
+
+    .orbit2 {
+
+        width: 360px;
+
+        height: 360px;
+
+    }
+
+    .skills-grid,
     .achievement-grid {
 
         grid-template-columns:
